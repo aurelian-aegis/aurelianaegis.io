@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AurelianAegis Attestation Envelope — Specification</title>
+    <meta
+      name="description"
+      content="The standard format for AI agent governance telemetry: cryptographically verifiable admissibility tokens and execution receipts."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aurelianaegis.io/" />
+    <meta property="og:title" content="AurelianAegis Attestation Envelope — Specification" />
+    <meta property="og:description" content="The standard format for AI agent governance telemetry: cryptographically verifiable admissibility tokens and execution receipts. Open spec, Apache 2.0." />
+    <meta property="og:site_name" content="AurelianAegis" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AurelianAegis Attestation Envelope — Specification" />
+    <meta name="twitter:description" content="The standard format for AI agent governance telemetry: cryptographically verifiable admissibility tokens and execution receipts. Open spec, Apache 2.0." />
+    <meta name="twitter:url" content="https://aurelianaegis.io/" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://aurelianaegis.io/" />
+
+    <!-- Favicon placeholder — replace with actual icon file -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🛡</text></svg>" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="brand" href="#top">AurelianAegis · Attestation</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#overview">Overview</a>
+          <a href="#artifacts">Artifacts</a>
+          <a href="#adoption">Adoption</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#guides">Guides</a>
+          <a href="#resources">Resources</a>
+          <a data-gh-tree href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <span class="hero__eyebrow">Technical specification</span>
+        <h1>Attestation Envelope for agent governance</h1>
+        <p class="hero__lead">
+          A global, domain-agnostic format for recording <strong>pre-execution</strong> policy decisions and
+          <strong>post-execution</strong> outcomes in a signed, tamper-evident envelope—so enterprises can prove
+          what agents were allowed to do and what they actually did.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" data-gh-repo href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema">
+            View specification on GitHub
+          </a>
+          <a class="btn btn--ghost" data-gh-implementation href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/docs/IMPLEMENTATION-GUIDE.md">
+            Implementation guide
+          </a>
+        </div>
+        <p class="hero__audience">
+          Built for platform engineering, security, GRC, and audit teams implementing governed AI operations.
+        </p>
+        <div class="hero__meta">
+          <span><strong>Schema</strong> · JSON Schema draft-07</span>
+          <span><strong>Current release</strong> · 1.0.0</span>
+          <span><strong>Payload spec_id</strong> · aurelianaegis.envelope.v1</span>
+          <span><strong>License</strong> · Apache 2.0</span>
+        </div>
+        <p class="schema-id" id="schema-id">
+          Canonical schema ID:
+          <span id="schema-id-value">https://aurelianaegis.io/schema/attestation-envelope.json</span>
+        </p>
+        <div class="trust-row" aria-label="Trust markers">
+          <span class="trust-pill">Open spec</span>
+          <span class="trust-pill">Cryptographically verifiable</span>
+          <span class="trust-pill">Enterprise audit-ready</span>
+          <span class="trust-pill">Cross-platform interoperable</span>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="overview">
+        <h2 class="section__title">Why this matters</h2>
+        <p class="section__intro">
+          Move from policy intent to verifiable runtime evidence. The envelope model records authorization and execution
+          outcomes as signed, machine-parseable records that fit existing enterprise controls.
+        </p>
+
+        <div class="grid-3" style="margin-top: 2rem">
+          <article class="card">
+            <h4>Prove pre-authorization</h4>
+            <p>
+              Record an <code>admissibility_token</code> before execution with policy decision, validity window, and PEP
+              signer requirements.
+            </p>
+          </article>
+          <article class="card">
+            <h4>Prove runtime outcome</h4>
+            <p>
+              Record an <code>execution_receipt</code> with final status, structured blocking reason, and linkage to the
+              originating admissibility event.
+            </p>
+          </article>
+          <article class="card">
+            <h4>Prove tamper evidence</h4>
+            <p>
+              Verify signatures over RFC 8785 canonical payloads and optionally enforce append-only chain integrity with
+              <code>sequence_number</code> and <code>previous_event_hash</code>.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="artifacts">
+        <h2 class="section__title">Artifact model</h2>
+        <p class="section__intro">
+          The current specification defines two primary artifact types. Pick the path that matches your enforcement architecture; production
+          systems typically emit both a token and a receipt per governed action.
+        </p>
+
+        <div class="tier-grid tier-grid--two">
+          <div class="tier">
+            <div class="pill">Pre-execution</div>
+            <h3 class="tier__name">Admissibility token</h3>
+            <p class="tier__tag">PEP · policy decision</p>
+            <dl>
+              <dt>Role</dt>
+              <dd>Authorize a specific capability call before it runs.</dd>
+              <dt>Signer</dt>
+              <dd><code>enforcement</code> (PEP) required.</dd>
+              <dt>Pairing</dt>
+              <dd>Execution receipts reference <code>admissibility_event_id</code>.</dd>
+              <dt>Validity</dt>
+              <dd><code>valid_from</code> / <code>valid_until</code> + <code>nonce</code>.</dd>
+            </dl>
+          </div>
+          <div class="tier">
+            <div class="pill">Post-execution</div>
+            <h3 class="tier__name">Execution receipt</h3>
+            <p class="tier__tag">Outcome · chain · audit</p>
+            <dl>
+              <dt>Role</dt>
+              <dd>Record what executed, final status, and enforcement metadata.</dd>
+              <dt>Signer</dt>
+              <dd><code>enforcement</code>, <code>control_plane</code>, or <code>detection</code> (e.g. shadow AI).</dd>
+              <dt>Outcome</dt>
+              <dd>Structured <code>blocking_reason</code> for deny/escalate paths.</dd>
+              <dt>Chain</dt>
+              <dd>Optional <code>sequence_number</code> + <code>previous_event_hash</code>.</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="section-cta">
+          <div>
+            <h3>Implement the artifact pair</h3>
+            <p>Use both token and receipt for end-to-end governance evidence in production pipelines.</p>
+          </div>
+          <div class="section-cta__actions">
+            <a class="btn btn--primary" data-gh-integration href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/INTEGRATION.md">Integration quickstart</a>
+            <a class="btn btn--ghost" data-gh-examples href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/examples">View example payloads</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="adoption">
+        <h2 class="section__title">Adoption path</h2>
+        <p class="section__intro">
+          A practical path from schema-first validation to production ingestion in enterprise governance pipelines.
+        </p>
+        <div class="path-grid">
+          <article class="step-card">
+            <span class="step-card__num">01</span>
+            <h4>Validate schema</h4>
+            <p>Use schema validation to catch malformed payloads and enforce required fields before ingestion.</p>
+            <a data-gh-schema href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/attestation-envelope.json">Schema reference</a>
+          </article>
+          <article class="step-card">
+            <span class="step-card__num">02</span>
+            <h4>Verify signatures</h4>
+            <p>Apply RFC 8785 signing and verifier rules from the normative signing specification.</p>
+            <a data-gh-signing href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SIGNING.md">Signing protocol</a>
+          </article>
+          <article class="step-card">
+            <span class="step-card__num">03</span>
+            <h4>Emit token + receipt</h4>
+            <p>Produce admissibility and execution artifacts as a paired governance evidence stream.</p>
+            <a data-gh-examples href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/examples">Example payloads</a>
+          </article>
+          <article class="step-card">
+            <span class="step-card__num">04</span>
+            <h4>Ingest in SIEM / GRC</h4>
+            <p>Route attestation events to operations, compliance, and observability workflows.</p>
+            <a data-gh-integration href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/INTEGRATION.md">Integration guide</a>
+          </article>
+        </div>
+        <div class="section-cta section-cta--alt">
+          <div>
+            <h3>Start with the implementation guide</h3>
+            <p>Choose the path matching your stack: schema-only validator, full verifier, gateway enforcement, or no-code controls.</p>
+          </div>
+          <div class="section-cta__actions">
+            <a class="btn btn--primary" data-gh-implementation href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/docs/IMPLEMENTATION-GUIDE.md">Implementation guide</a>
+            <a class="btn btn--ghost" data-gh-specification href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SPECIFICATION.md">Conformance model</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="evidence">
+        <h2 class="section__title">Conformance &amp; interoperability evidence</h2>
+        <p class="section__intro">
+          Validate implementation quality using repository checks, conformance classes, and cryptographic interoperability vectors.
+        </p>
+        <div class="resources">
+          <article class="resource">
+            <h4>Schema + constraints</h4>
+            <p>Run the baseline schema and constraint checks for current and release snapshots.</p>
+            <a data-gh-readme href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/README.md">Validation commands</a>
+          </article>
+          <article class="resource">
+            <h4>Signature vectors</h4>
+            <p>Use Ed25519 and ECDSA vectors to verify canonicalization and signature behavior.</p>
+            <a data-gh-vectors href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/test-vectors">Interoperability vectors</a>
+          </article>
+          <article class="resource">
+            <h4>Conformance classes</h4>
+            <p>Align product claims to C1 signer, C2 verifier, and C3 schema-only validator behavior.</p>
+            <a data-gh-specification href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SPECIFICATION.md">Conformance definition</a>
+          </article>
+          <article class="resource">
+            <h4>Chain integrity</h4>
+            <p>Apply deletion and reordering detection for high-assurance audit evidence streams.</p>
+            <a data-gh-chain href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/CHAIN-INTEGRITY.md">Chain protocol</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="resources">
+        <h2 class="section__title">Specification &amp; resources</h2>
+        <p class="section__intro">
+          The normative artifacts, examples, and test vectors live in the open-source repository. This site is an
+          overview; GitHub remains the source of truth for the schema and protocol text.
+        </p>
+
+        <p style="margin: 0 0 1rem">
+          <a class="btn btn--primary" data-gh-tree href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main">
+            Browse repository on GitHub
+          </a>
+        </p>
+
+        <div class="resources">
+          <article class="resource">
+            <h4>JSON Schema</h4>
+            <p>Machine-readable schema for validation, codegen, and CI gates (<code>spec_id</code> aurelianaegis.envelope.v1).</p>
+            <a data-gh-schema href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/attestation-envelope.json">View schema file</a>
+          </article>
+          <article class="resource">
+            <h4>Examples</h4>
+            <p>Admissibility token, execution receipt, multi-agent, and shadow-AI fixtures.</p>
+            <a data-gh-examples href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/examples">Open examples folder</a>
+          </article>
+          <article class="resource">
+            <h4>Interoperability vectors</h4>
+            <p>Signed canonicalization fixtures (Ed25519, ECDSA P-256 / P-384).</p>
+            <a data-gh-vectors href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/test-vectors">View test vectors</a>
+          </article>
+          <article class="resource">
+            <h4>Normative docs</h4>
+            <p>Signing, chain integrity, integration, vocabulary, and regulatory mapping.</p>
+            <a data-gh-readme href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/README.md">Repository README</a>
+          </article>
+        </div>
+
+        <div class="subsection" id="guides" style="margin-top: 2.5rem">
+          <h3>Guides</h3>
+          <p style="color: var(--text-muted); max-width: 65ch; margin: 0 0 1.25rem">
+            Consolidated specification, pipeline integration, and operational enforcement patterns—all on GitHub.
+          </p>
+          <div class="resources">
+            <article class="resource">
+              <h4>Specification</h4>
+              <p>
+                Consolidated spec: normative references (schema, signing, chain), conformance classes, and annex index.
+              </p>
+              <a data-gh-specification href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SPECIFICATION.md">Read SPECIFICATION.md</a>
+            </article>
+            <article class="resource">
+              <h4>Integration</h4>
+              <p>SIEM, GRC, observability, transport, and replay considerations for production pipelines.</p>
+              <a data-gh-integration href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/INTEGRATION.md">Read INTEGRATION.md</a>
+            </article>
+            <article class="resource">
+              <h4>Implementation guide</h4>
+              <p>Role-based implementation tracks for developers, verifiers, and platform security teams.</p>
+              <a data-gh-implementation href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/docs/IMPLEMENTATION-GUIDE.md">Read IMPLEMENTATION-GUIDE.md</a>
+            </article>
+            <article class="resource">
+              <h4>Agent platforms</h4>
+              <p>
+                Universal PEP pattern for LangGraph, CrewAI, AutoGen, Semantic Kernel, Strands/AgentCore, MCP, and related
+                runtimes.
+              </p>
+              <a data-gh-usage-universal href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/usage/universal-enforcement-agentic-platforms.md">Universal enforcement guide</a>
+            </article>
+            <article class="resource">
+              <h4>No-code / low-code</h4>
+              <p>
+                Central PEP, n8n, gateways, managed agents, shadow detection, and rollout patterns for low-code stacks.
+              </p>
+              <a data-gh-usage-nocode href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/usage/no-code-low-code-enforcement.md">No-code / low-code guide</a>
+            </article>
+          </div>
+        </div>
+
+        <div class="subsection" style="margin-top: 2rem">
+          <h3>Deep links</h3>
+          <ul>
+            <li><a data-gh-signing href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SIGNING.md">Signing protocol</a></li>
+            <li><a data-gh-chain href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/CHAIN-INTEGRITY.md">Chain integrity</a></li>
+            <li><a data-gh-contributing href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/CONTRIBUTING.md">Contributing</a></li>
+          </ul>
+        </div>
+        <div class="section-cta">
+          <div>
+            <h3>Start consuming today</h3>
+            <p>Clone the repo, run validators, and wire receipts into SIEM, GRC, and observability workflows.</p>
+          </div>
+          <div class="section-cta__actions">
+            <a class="btn btn--primary" data-gh-repo href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema">Open repository</a>
+            <a class="btn btn--ghost" data-gh-tree href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main">Browse all docs</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-band" id="implement">
+        <h2>Ready to implement?</h2>
+        <p>
+          Start from the README and validation scripts in the repo, then wire your enforcement layer to emit admissibility
+          tokens and execution receipts into your existing SIEM and GRC pipelines.
+        </p>
+        <a class="btn btn--primary" data-gh-repo href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema">
+          Open the GitHub project
+        </a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© AurelianAegis · Attestation Envelope schema</span>
+      <span>Informative site · <a data-gh-tree href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main">Specification on GitHub</a></span>
+    </footer>
+
+    <script src="js/site-config.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+      (function () {
+        var cfg = window.AEGIS_SITE_CONFIG || {};
+        if (cfg.schemaId) {
+          var el = document.getElementById("schema-id-value");
+          if (el) el.textContent = cfg.schemaId;
+        }
+      })();
+    </script>
+  </body>
+</html>
