@@ -6,20 +6,20 @@
     <title>AurelianAegis Attestation Envelope — Specification</title>
     <meta
       name="description"
-      content="The standard format for AI agent governance telemetry: cryptographically verifiable admissibility tokens and execution receipts."
+      content="An open vocabulary and reference format for AI agent governance attestation: structured admissibility tokens and execution receipts for controlled enterprise deployments."
     />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://aurelianaegis.io/" />
     <meta property="og:title" content="AurelianAegis Attestation Envelope — Specification" />
-    <meta property="og:description" content="The standard format for AI agent governance telemetry: cryptographically verifiable admissibility tokens and execution receipts. Open spec, Apache 2.0." />
+    <meta property="og:description" content="An open vocabulary and reference format for AI agent governance attestation. Structured admissibility tokens and execution receipts for controlled enterprise deployments. Open spec, Apache 2.0." />
     <meta property="og:site_name" content="AurelianAegis" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="AurelianAegis Attestation Envelope — Specification" />
-    <meta name="twitter:description" content="The standard format for AI agent governance telemetry: cryptographically verifiable admissibility tokens and execution receipts. Open spec, Apache 2.0." />
+    <meta name="twitter:description" content="An open vocabulary and reference format for AI agent governance attestation. Structured admissibility tokens and execution receipts for controlled enterprise deployments. Open spec, Apache 2.0." />
     <meta name="twitter:url" content="https://aurelianaegis.io/" />
 
     <!-- Canonical -->
@@ -57,9 +57,9 @@
         <span class="hero__eyebrow">Technical specification</span>
         <h1>Attestation Envelope for agent governance</h1>
         <p class="hero__lead">
-          A global, domain-agnostic format for recording <strong>pre-execution</strong> policy decisions and
-          <strong>post-execution</strong> outcomes in a signed, tamper-evident envelope—so enterprises can prove
-          what agents were allowed to do and what they actually did.
+          An open, domain-agnostic vocabulary for recording <strong>pre-execution</strong> policy decisions and
+          <strong>post-execution</strong> outcomes in a signed, integrity-verified envelope—giving enterprises
+          structured, verifiable records of what agents were authorized to do and what they actually did.
         </p>
         <div class="hero__actions">
           <a class="btn btn--primary" data-gh-repo href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema">
@@ -84,39 +84,40 @@
         </p>
         <div class="trust-row" aria-label="Trust markers">
           <span class="trust-pill">Open spec</span>
-          <span class="trust-pill">Cryptographically verifiable</span>
-          <span class="trust-pill">Enterprise audit-ready</span>
-          <span class="trust-pill">Cross-platform interoperable</span>
+          <span class="trust-pill">Cryptographic record integrity</span>
+          <span class="trust-pill">Controlled enterprise deployment</span>
+          <span class="trust-pill">SIEM &amp; GRC interoperable</span>
         </div>
       </section>
 
       <section class="section section--alt" id="overview">
         <h2 class="section__title">Why this matters</h2>
         <p class="section__intro">
-          Move from policy intent to verifiable runtime evidence. The envelope model records authorization and execution
-          outcomes as signed, machine-parseable records that fit existing enterprise controls.
+          Move from policy intent to structured runtime evidence. The envelope model records authorization decisions and
+          execution outcomes as signed, machine-parseable records that fit existing enterprise SIEM and GRC controls —
+          designed for deployments where the operator controls the execution environment.
         </p>
 
         <div class="grid-3" style="margin-top: 2rem">
           <article class="card">
-            <h4>Prove pre-authorization</h4>
+            <h4>Record pre-authorization</h4>
             <p>
-              Record an <code>admissibility_token</code> before execution with policy decision, validity window, and PEP
-              signer requirements.
+              Emit an <code>admissibility_token</code> before execution with policy decision, validity window, and PEP
+              signer requirements — structured evidence of the authorization decision.
             </p>
           </article>
           <article class="card">
-            <h4>Prove runtime outcome</h4>
+            <h4>Record runtime outcome</h4>
             <p>
-              Record an <code>execution_receipt</code> with final status, structured blocking reason, and linkage to the
-              originating admissibility event.
+              Emit an <code>execution_receipt</code> with final status, structured blocking reason, and linkage to the
+              originating admissibility event — a consistent, machine-parseable audit record.
             </p>
           </article>
           <article class="card">
-            <h4>Prove tamper evidence</h4>
+            <h4>Verify record integrity</h4>
             <p>
-              Verify signatures over RFC 8785 canonical payloads and optionally enforce append-only chain integrity with
-              <code>sequence_number</code> and <code>previous_event_hash</code>.
+              Verify signatures over RFC 8785 canonical payloads and optionally enable append-only chain integrity with
+              <code>sequence_number</code> and <code>previous_event_hash</code> for gap and deletion detection.
             </p>
           </article>
         </div>
@@ -346,7 +347,8 @@
         <h2>Ready to implement?</h2>
         <p>
           Start from the README and validation scripts in the repo, then wire your enforcement layer to emit admissibility
-          tokens and execution receipts into your existing SIEM and GRC pipelines.
+          tokens and execution receipts into your existing SIEM and GRC pipelines. Best suited for enterprise deployments
+          with a controlled execution environment and a trusted enforcement layer.
         </p>
         <a class="btn btn--primary" data-gh-repo href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema">
           Open the GitHub project
