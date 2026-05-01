@@ -1,0 +1,34 @@
+# AurelianAegis
+
+> Open attestation specification for governed enterprise AI agent operations.
+
+AurelianAegis defines an open, domain-agnostic attestation envelope for recording pre-execution policy authorization and post-execution runtime outcomes as signed, integrity-verifiable evidence.
+
+## Primary Resources
+
+- Homepage: https://aurelianaegis.io/
+- JSON Schema: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/releases/v1.0.0/attestation-envelope.json
+- GitHub Repository: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema
+- Specification: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SPECIFICATION.md
+- Implementation Guide: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/docs/IMPLEMENTATION-GUIDE.md
+- Integration Guide: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/INTEGRATION.md
+- Signing Protocol: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/SIGNING.md
+- Chain Integrity: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/spec/CHAIN-INTEGRITY.md
+- Examples: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/examples
+- Test Vectors: https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/tree/main/test-vectors
+
+## What This Site Covers
+
+- AI agent governance attestation model
+- Admissibility token (pre-execution authorization record)
+- Execution receipt (post-execution outcome record)
+- Signature verification and canonicalization expectations
+- Enterprise SIEM and GRC integration patterns
+
+## Intended Audience
+
+Platform engineering, security, governance, risk, compliance, and audit teams implementing governed AI operations.
+
+## Policy
+
+Public documentation and specification content may be indexed and summarized by AI assistants and search systems.

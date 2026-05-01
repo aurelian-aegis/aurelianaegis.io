@@ -1,4 +1,44 @@
 User-agent: *
 Allow: /
 
+# OpenAI
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+
+# Google (Search + AI systems)
+User-agent: Googlebot
+Allow: /
+User-agent: GoogleOther
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# xAI / Grok
+User-agent: Grok
+Allow: /
+
+# Additional AI crawlers and aggregators
+User-agent: DeepSeekBot
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Applebot
+Allow: /
+User-agent: bingbot
+Allow: /
+
 Sitemap: https://aurelianaegis.io/sitemap.xml
