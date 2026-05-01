@@ -8,6 +8,7 @@
       name="description"
       content="An open vocabulary and reference format for AI agent governance attestation: structured admissibility tokens and execution receipts for controlled enterprise deployments."
     />
+    <meta name="google-site-verification" content="6T39e1GwLOGIrcsVcPaS-7zaqrXqIXfXDhAZRnBqOB0" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -24,6 +25,50 @@
 
     <!-- Canonical -->
     <link rel="canonical" href="https://aurelianaegis.io/" />
+    <link rel="alternate" type="text/plain" href="https://aurelianaegis.io/llms.txt" title="LLMs manifest" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://aurelianaegis.io/#organization",
+            "name": "AurelianAegis",
+            "url": "https://aurelianaegis.io/",
+            "sameAs": [
+              "https://github.com/aurelian-aegis/aurelianaegis-attestation-schema"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://aurelianaegis.io/#website",
+            "url": "https://aurelianaegis.io/",
+            "name": "AurelianAegis",
+            "description": "Open specification site for the AurelianAegis Attestation Envelope used in governed enterprise AI agent operations.",
+            "publisher": {
+              "@id": "https://aurelianaegis.io/#organization"
+            }
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://aurelianaegis.io/#specification",
+            "headline": "AurelianAegis Attestation Envelope Specification",
+            "url": "https://aurelianaegis.io/",
+            "about": [
+              "AI agent governance",
+              "attestation",
+              "policy enforcement",
+              "runtime evidence",
+              "enterprise AI controls"
+            ],
+            "isPartOf": {
+              "@id": "https://aurelianaegis.io/#website"
+            }
+          }
+        ]
+      }
+    </script>
 
     <!-- Favicon placeholder — replace with actual icon file -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🛡</text></svg>" />
@@ -80,7 +125,7 @@
         </div>
         <p class="schema-id" id="schema-id">
           Canonical schema ID:
-          <span id="schema-id-value">https://aurelianaegis.io/schema/attestation-envelope.json</span>
+          <span id="schema-id-value">https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/releases/v1.0.0/attestation-envelope.json</span>
         </p>
         <div class="trust-row" aria-label="Trust markers">
           <span class="trust-pill">Open spec</span>
@@ -184,7 +229,7 @@
             <span class="step-card__num">01</span>
             <h4>Validate schema</h4>
             <p>Use schema validation to catch malformed payloads and enforce required fields before ingestion.</p>
-            <a data-gh-schema href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/attestation-envelope.json">Schema reference</a>
+            <a data-gh-schema href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/releases/v1.0.0/attestation-envelope.json">Schema reference</a>
           </article>
           <article class="step-card">
             <span class="step-card__num">02</span>
@@ -263,7 +308,7 @@
           <article class="resource">
             <h4>JSON Schema</h4>
             <p>Machine-readable schema for validation, codegen, and CI gates (<code>spec_id</code> aurelianaegis.envelope.v1).</p>
-            <a data-gh-schema href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/attestation-envelope.json">View schema file</a>
+            <a data-gh-schema href="https://github.com/aurelian-aegis/aurelianaegis-attestation-schema/blob/main/schema/releases/v1.0.0/attestation-envelope.json">View schema file</a>
           </article>
           <article class="resource">
             <h4>Examples</h4>
